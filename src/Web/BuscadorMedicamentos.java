@@ -131,14 +131,14 @@ public class BuscadorMedicamentos {
 				+ "																"+Testing.esquema+".calificadores_snomed as form,"
 				+ "																"+Testing.esquema+".droga_formasimplificada as anc,"
 				+ "	 															"+Testing.esquema+".drogas_anmat as anm		"
-	//			+ "																, "+Testing.esquema+".drogas_snomed as snom "
+				+ "																, "+Testing.esquema+".drogas_snomed as snom "
 				+ "														WHERE 													 "
 				+ "																man.nombre = anm.medicamento_nombre and 		"	// Se llaman igual
 				+ "																form.detalle_calificador=anm.formaFarmaceutica and "
 				+ "																(form.idcalificador_Snomed like '"+id_FormaFa+"' or form.ancestro_calificador like '"+id_FormaFa+"') and 	"
 				+ "																(anm.presentacion_unidades like '"+unidad+"' or  anm.presentacion_unidades=0 )   and"
 				+ "																man.id_manfar="+id+" "
-		//				+ " and											(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed)) "
+						+ " and											(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed)) "
 				+ "																"
 				+ "														GROUP BY anm.nro_certificado_anmat,anm.indexCertif,man.nombre,anm.medicamento_nombre	"
 				+ "																"
@@ -153,11 +153,11 @@ public class BuscadorMedicamentos {
 					+ "														FROM 	"+Testing.esquema+".medicamentos_manfar as man, "
 					+ "																"+Testing.esquema+".droga_formasimplificada as anc,"
 					+ "	 															"+Testing.esquema+".drogas_anmat as anm	"
-			//		+ "															,	"+Testing.esquema+".drogas_snomed as snom "
+					+ "															,	"+Testing.esquema+".drogas_snomed as snom "
 					+ "														WHERE 													 "
 					+ "																man.id_manfar="+id+" and		"
 					+ "																(man.nombre like concat(anm.medicamento_nombre,'%') or anm.medicamento_nombre like concat(man.nombre,'%'))		"
-			//		+ "																and (snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed)) "						
+					+ "																and (snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed)) "						
 					+ "														GROUP BY anm.nro_certificado_anmat,anm.indexCertif,man.nombre,anm.medicamento_nombre	"
 					+ "																"
 					+ "														","cant"));		
@@ -256,16 +256,15 @@ public class BuscadorMedicamentos {
 			if (hallados.size()==1)
 			{
 				resultado.addAll(managerDB.executeScript_Query(	
-						"	SELECT concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
-	//					"	SELECT concat(snom.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
+						"	SELECT concat(snom.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
 								+ 	"FROM  "
 								+ 	""+Testing.esquema+".drogas_anmat as anm, "
 								+ 	""+Testing.esquema+".droga_formasimplificada as anc"
-		//						+ 	","+Testing.esquema+".drogas_snomed as snom "
+								+ 	","+Testing.esquema+".drogas_snomed as snom "
 								+ "	where		"
 								+ "		anm.nro_certificado_anmat="+hallados.get(0).split("_")[0] +" and "
 								+ "		anm.indexCertif="+hallados.get(0).split("_")[1] +" "
-//								+ "	and	(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
+								+ "	and	(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
 								+ "","nombre"));
 
 			}
@@ -296,11 +295,11 @@ public class BuscadorMedicamentos {
 										+ 	"FROM  "
 										+ 	""+Testing.esquema+".drogas_anmat as anm, "
 										+ 	""+Testing.esquema+".droga_formasimplificada as anc"
-								//		+ 	", "+Testing.esquema+".drogas_snomed as snom "
+										+ 	", "+Testing.esquema+".drogas_snomed as snom "
 										+ "	where		"
 										+ "		anm.nro_certificado_anmat="+sugerencia.get(0).split("_")[0] +" and "
 										+ "		anm.indexCertif="+sugerencia.get(0).split("_")[1] +" s"
-								//		+ "	and	(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
+										+ "	and	(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
 										+ "","nombre"));
 
 					}
