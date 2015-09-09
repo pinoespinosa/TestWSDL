@@ -176,10 +176,9 @@ public class managerDB {
 
 		} catch (Exception e)
 		{
-			//tesis.writeLogStandar(e);
 			
 			if (ErroresVisibles)
-				resultado=new ArrayList<String>();
+				e.printStackTrace();
 		}
 		return resultado;
 	}
