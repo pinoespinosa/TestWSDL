@@ -74,8 +74,9 @@ public class BuscadorMedicamentos {
 					+ "select "
 					+ "		concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
 					+ "from  "
-			//		+ "		"+Testing.esquema+".drogas_anmat as anm, "+Testing.esquema+".drogas_snomed as sno, "
-					+ "		"+Testing.esquema+".droga_formasimplificada as anc "
+					+ 	Testing.esquema+".drogas_anmat as anm, "
+			//		+ 	Testing.esquema+".drogas_snomed as sno, "
+					+ 	Testing.esquema+".droga_formasimplificada as anc "
 					+ "where "
 					+ "		anm.droga_nombre=anc.DrogaOrigen and "
 			//		+ "		anc.idDrogaAncestro=sno.iddrogas_Snomed and "
@@ -109,7 +110,7 @@ public class BuscadorMedicamentos {
 		if (!formasFiltradas.isEmpty())
 			id_FormaFa=formasFiltradas.get(0);
 		
-		
+		 
 		// UNIDADES
 		
 		// Conjunto de formasFarmaceuticas, (algunas son del aleman, otras null)
@@ -201,7 +202,7 @@ public class BuscadorMedicamentos {
 //					+ 	","+Testing.esquema+".drogas_snomed as snom "
 					+ "	where		"
 					+ "		anm.nro_certificado_anmat="+hallados.get(0).split("_")[0] +" "
-					+ "		anm.indexCertif="+hallados.get(0).split("_")[1] +" "
+					+ " and	anm.indexCertif="+hallados.get(0).split("_")[1] +" "
 			//		+ "and		(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
 					+ "","nombre"));
 
