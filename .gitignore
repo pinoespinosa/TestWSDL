@@ -1,0 +1,11 @@
+/build/
+*.class
+
+# Eclipse Files and Folders
+.classpath
+.project
+.settings
+CVS/
+target/
+bin/
+build/
