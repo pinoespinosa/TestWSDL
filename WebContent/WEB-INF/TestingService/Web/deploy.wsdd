@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from TestingService WSDL service -->
+
+  <service name="Testing" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://Web"/>
+      <parameter name="wsdlServiceElement" value="TestingService"/>
+      <parameter name="schemaQualified" value="http://Web,http://xml"/>
+      <parameter name="wsdlServicePort" value="Testing"/>
+      <parameter name="className" value="Web.Testing"/>
+      <parameter name="wsdlPortType" value="Testing"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://Web" xmlns:retNS="http://Web" xmlns:rtns="http://xml" name="getInteractionsWithMedicaments" qname="operNS:getInteractionsWithMedicaments" returnQName="retNS:getInteractionsWithMedicamentsReturn" returnType="rtns:EventoInteraccionMedicamentosa" soapAction="">
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:idMedico" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:peso" type="tns:int"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:edad" type="tns:int"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:sexo" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:medicaciones" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:conditions" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://Web" xmlns:retNS="http://Web" xmlns:rtns="http://xml" name="getInteractionsWithProblems" qname="operNS:getInteractionsWithProblems" returnQName="retNS:getInteractionsWithProblemsReturn" returnType="rtns:EventoInteraccionCondicion" soapAction="">
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:idMedico" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:peso" type="tns:int"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:edad" type="tns:int"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:sexo" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:medicaciones" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:conditions" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://Web" name="setSugerencia" qname="operNS:setSugerencia" soapAction="">
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:idMedico" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:idManfar" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:codigo" type="tns:string"/>
+      </operation>
+      <operation xmlns:operNS="http://Web" xmlns:retNS="http://Web" xmlns:rtns="http://xml" name="getDoseEvents" qname="operNS:getDoseEvents" returnQName="retNS:getDoseEventsReturn" returnType="rtns:EventoDosificacion" soapAction="">
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:idMedico" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:peso" type="tns:int"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:edad" type="tns:int"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:sexo" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:medicaciones" type="tns:string"/>
+        <parameter xmlns:pns="http://Web" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:conditions" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="setSugerencia getInteractionsWithProblems getDoseEvents getInteractionsWithMedicaments"/>
+
+      <arrayMapping xmlns:ns="http://Web" xmlns:cmp-ns="http://xml" qname="ns:ArrayOf_tns1_EventoAmbiguedad" type="java:xml.EventoAmbiguedad[]" innerType="cmp-ns:EventoAmbiguedad" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://xml" qname="ns:EventoInteraccionCondicion" type="java:xml.EventoInteraccionCondicion" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://xml" qname="ns:EventoAmbiguedad" type="java:xml.EventoAmbiguedad" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://xml" qname="ns:EventoInteraccionMedicamentosa" type="java:xml.EventoInteraccionMedicamentosa" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://xml" qname="ns:EventoDosificacion" type="java:xml.EventoDosificacion" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+  </service>
+</deployment>
