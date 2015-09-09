@@ -60,23 +60,25 @@ public class BuscadorMedicamentos {
 		Set<String> resultado = new HashSet<String>();
 		resultado.addAll(managerDB.executeScript_Query(""
 				+ "select "
-				+ "		concat(sno.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
+				+ "		concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
 				+ "from  "
-				+ "		"+Testing.esquema+".drogas_anmat as anm, "+Testing.esquema+".drogas_snomed as sno, "
+				+ "		"+Testing.esquema+".drogas_anmat as anm, "
+	//					+ ""+Testing.esquema+".drogas_snomed as sno, "
 				+ "		"+Testing.esquema+".droga_formasimplificada as anc "
 				+ "where "
-				+ "		sno.iddrogas_Anmat=anm.droga_nombre and "
+		//		+ "		sno.iddrogas_Anmat=anm.droga_nombre and "
 				+ "		anm.idManfar like "+id,"nombre"));
 		
 		if (resultado.isEmpty())
 			resultado.addAll(managerDB.executeScript_Query(""
 					+ "select "
-					+ "		concat(sno.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
+					+ "		concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
 					+ "from  "
-					+ "		"+Testing.esquema+".drogas_anmat as anm, "+Testing.esquema+".drogas_snomed as sno, "
+			//		+ "		"+Testing.esquema+".drogas_anmat as anm, "+Testing.esquema+".drogas_snomed as sno, "
 					+ "		"+Testing.esquema+".droga_formasimplificada as anc "
 					+ "where "
-					+ "		anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=sno.iddrogas_Snomed and "
+					+ "		anm.droga_nombre=anc.DrogaOrigen and "
+			//		+ "		anc.idDrogaAncestro=sno.iddrogas_Snomed and "
 					+ "		anm.idManfar like "+id,"nombre"));
 		
 		
@@ -192,15 +194,15 @@ public class BuscadorMedicamentos {
 		{
 			resultado.clear();
 			resultado.addAll(managerDB.executeScript_Query(	
-					"	SELECT concat(snom.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
+					"	SELECT concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
 					+ 	"FROM  "
 					+ 	""+Testing.esquema+".drogas_anmat as anm, "
-					+ 	""+Testing.esquema+".droga_formasimplificada as anc,"
-					+ 	""+Testing.esquema+".drogas_snomed as snom "
+					+ 	""+Testing.esquema+".droga_formasimplificada as anc "
+//					+ 	","+Testing.esquema+".drogas_snomed as snom "
 					+ "	where		"
-					+ "		anm.nro_certificado_anmat="+hallados.get(0).split("_")[0] +" and "
-					+ "		anm.indexCertif="+hallados.get(0).split("_")[1] +" and "
-					+ "		(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
+					+ "		anm.nro_certificado_anmat="+hallados.get(0).split("_")[0] +" "
+					+ "		anm.indexCertif="+hallados.get(0).split("_")[1] +" "
+			//		+ "and		(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
 					+ "","nombre"));
 
 		}
@@ -226,15 +228,15 @@ public class BuscadorMedicamentos {
 					{
 						hallados.clear();
 						hallados.addAll(managerDB.executeScript_Query(	
-								"	SELECT concat(snom.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
+								"	SELECT concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
 								+ 	"FROM  "
 								+ 	""+Testing.esquema+".drogas_anmat as anm, "
-								+ 	""+Testing.esquema+".droga_formasimplificada as anc,"
-								+ 	""+Testing.esquema+".drogas_snomed as snom "
+								+ 	""+Testing.esquema+".droga_formasimplificada as anc"
+					//			+ 	" ,"+Testing.esquema+".drogas_snomed as snom "
 								+ "	where		"
 								+ "		anm.nro_certificado_anmat="+sugerencia.get(0).split("_")[0] +" and "
-								+ "		anm.indexCertif="+sugerencia.get(0).split("_")[1] +" and "
-								+ "		(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
+								+ "		anm.indexCertif="+sugerencia.get(0).split("_")[1] +"  "
+				//				+ "and		(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
 								+ "","nombre"));
 						
 					}
@@ -257,15 +259,12 @@ public class BuscadorMedicamentos {
 			{
 				resultado.addAll(managerDB.executeScript_Query(	
 						"	SELECT concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
-	//					"	SELECT concat(snom.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
 								+ 	"FROM  "
 								+ 	""+Testing.esquema+".drogas_anmat as anm, "
 								+ 	""+Testing.esquema+".droga_formasimplificada as anc"
-		//						+ 	","+Testing.esquema+".drogas_snomed as snom "
 								+ "	where		"
 								+ "		anm.nro_certificado_anmat="+hallados.get(0).split("_")[0] +" and "
 								+ "		anm.indexCertif="+hallados.get(0).split("_")[1] +" "
-//								+ "	and	(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
 								+ "","nombre"));
 
 			}
@@ -292,7 +291,7 @@ public class BuscadorMedicamentos {
 					{
 						resultado.clear();
 						resultado.addAll(managerDB.executeScript_Query(	
-								"	SELECT concat(snom.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
+								"	SELECT concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
 										+ 	"FROM  "
 										+ 	""+Testing.esquema+".drogas_anmat as anm, "
 										+ 	""+Testing.esquema+".droga_formasimplificada as anc"
