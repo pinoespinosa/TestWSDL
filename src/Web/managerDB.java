@@ -16,6 +16,8 @@ public class managerDB {
 							passConnection= "36442114";//"PINO";
 
 	private static boolean ErroresVisibles = true;
+	private static boolean PrintSQL = true;
+	
 
 	public static List<String> buscar( String tabla, String campo, String valorCampo, String campo_retornar, boolean exact){
 		// Consulta por un campo especifico en una tabla; es un caso tribial del "buscarExacto" al que se le pasan una lista de campos
@@ -162,7 +164,9 @@ public class managerDB {
 	public static List<String> executeScript_Query( String Script, String campo_retornar){
 		// Es la complementaria de la anterior, funciones que retornan como consultas.
 		
-		
+		if (PrintSQL)
+			System.out.println(Script);
+				
 		List<String> resultado = new ArrayList<String>();
 		ResultSet resultSet = null;
 		try{
