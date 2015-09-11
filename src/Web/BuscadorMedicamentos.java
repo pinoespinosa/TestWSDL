@@ -242,7 +242,10 @@ public class BuscadorMedicamentos {
 						
 					}
 					
+					if (hallados.isEmpty())
+						System.out.println();
 			}
+			
 							
 		
 		}	
@@ -299,7 +302,7 @@ public class BuscadorMedicamentos {
 								//		+ 	", "+Testing.esquema+".drogas_snomed as snom "
 										+ "	where		"
 										+ "		anm.nro_certificado_anmat="+sugerencia.get(0).split("_")[0] +" and "
-										+ "		anm.indexCertif="+sugerencia.get(0).split("_")[1] +" s"
+										+ "		anm.indexCertif="+sugerencia.get(0).split("_")[1] +" "
 								//		+ "	and	(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed))"
 										+ "","nombre"));
 
