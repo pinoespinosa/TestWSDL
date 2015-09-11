@@ -232,7 +232,7 @@ public class BuscadorMedicamentos {
 								"	SELECT concat(anm.droga_nombre,'_',anm.droga_cantidad) as nombre "
 								+ 	"FROM  "
 								+ 	""+Testing.esquema+".drogas_anmat as anm, "
-								+ 	""+Testing.esquema+".droga_formasimplificada as anc"
+								+ 	""+Testing.esquema+".droga_formasimplificada as anc "
 					//			+ 	" ,"+Testing.esquema+".drogas_snomed as snom "
 								+ "	where		"
 								+ "		anm.nro_certificado_anmat="+sugerencia.get(0).split("_")[0] +" and "
