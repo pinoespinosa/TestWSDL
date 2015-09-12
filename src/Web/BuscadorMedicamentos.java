@@ -241,7 +241,7 @@ public class BuscadorMedicamentos {
 								+ "","nombre"));
 						
 					}
-					
+					 
 					if (hallados.isEmpty())
 						System.out.println();
 			}
