@@ -44,12 +44,12 @@ public class BuscadorMedicamentos {
 				resultado.clear();
 			
 			if (!resultado.isEmpty())
-				managerDB.executeScript_Void("INSERT INTO `"+Testing.esquema+"`.`reportes2`VALUES ('"+ new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime())+"','Se hallo el equivalente en ANMAT para el medicamento idManfar=" + id+"')");
+				managerDB.executeScript_Void("INSERT INTO `"+Testing.esquema+"`.`reportes`VALUES ('"+ new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime())+"','Se hallo el equivalente en ANMAT para el medicamento idManfar=" + id+"')");
 			else
 				if (BuscadorMedicamentos.isFlagEventoAmbiguedadOFF())
-					managerDB.executeScript_Void("INSERT INTO `"+Testing.esquema+"`.`reportes2`VALUES ('"+ new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime())+"','No se hallo el equivalente en ANMAT para el medicamento idManfar=" + id+"')");
+					managerDB.executeScript_Void("INSERT INTO `"+Testing.esquema+"`.`reportes`VALUES ('"+ new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime())+"','No se hallo el equivalente en ANMAT para el medicamento idManfar=" + id+"')");
 				else
-					managerDB.executeScript_Void("INSERT INTO `"+Testing.esquema+"`.`reportes2`VALUES ('"+ new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime())+"','Se hallaron varios  equivalentes en ANMAT para el medicamento idManfar=" + id+"')");
+					managerDB.executeScript_Void("INSERT INTO `"+Testing.esquema+"`.`reportes`VALUES ('"+ new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime())+"','Se hallaron varios  equivalentes en ANMAT para el medicamento idManfar=" + id+"')");
 
 		}
 		
