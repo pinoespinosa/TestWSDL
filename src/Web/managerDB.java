@@ -167,6 +167,7 @@ public class managerDB {
 		try{
 			if (managerDB.conectionWasSucefull())
 			{
+//				System.out.println(Script);
 				resultSet = statement.executeQuery(Script);
 								
 				while (resultSet.next())

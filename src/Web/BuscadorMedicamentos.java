@@ -8,10 +8,13 @@ import java.util.Set;
 
 import xml.EventoAmbiguedad;
 import ClasesBD.FormaFarmaceutica;
+import ClasesBD.Script;
 
 
 public class BuscadorMedicamentos {
 
+	private static boolean hallado= false;
+	
 	public static boolean isFlagEventoAmbiguedadOFF(){
 		return Testing.bufferAmbiguedades==null;
 	}
@@ -26,24 +29,20 @@ public class BuscadorMedicamentos {
 
 		List<String> resultado = new ArrayList<String>();
 	
+		hallado=false;
+		
 		if (Integer.parseInt(id)>=0)
 		{
 			// Busco si esta referenciado directametne
 			resultado.addAll(buscarMedRefDirecto(id));
-
 			
-			// Si no lo halle lo busco cacheado
-			if (resultado.isEmpty())
+			if (!hallado)
 				resultado.addAll(buscarCacheDeBusquedas(id));
 
-			// Si no lo halle lo busco por caracteristicas
-			if ( (resultado.isEmpty() && BuscadorMedicamentos.isFlagEventoAmbiguedadOFF())){
+			if ( !hallado && BuscadorMedicamentos.isFlagEventoAmbiguedadOFF()){
 				resultado.addAll(buscarMedPorCaract(id));}
 				
-			if (!resultado.isEmpty() && resultado.get(0).equals("null"))
-				resultado.clear();
-			
-			if (!resultado.isEmpty())
+			if (hallado)
 				managerDB.executeScript_Void("INSERT INTO `"+Testing.esquema+"`.`reportes`VALUES ('"+ new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime())+"','Se hallo el equivalente en ANMAT para el medicamento idManfar=" + id+"')");
 			else
 				if (BuscadorMedicamentos.isFlagEventoAmbiguedadOFF())
@@ -56,31 +55,20 @@ public class BuscadorMedicamentos {
 		return resultado;
 	}
 	private static Set<String> buscarMedRefDirecto(String id){
-
+	
 		Set<String> resultado = new HashSet<String>();
-		resultado.addAll(managerDB.executeScript_Query(""
-				+ "select "
-				+ "		concat(sno.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
-				+ "from  "
-				+ "		"+Testing.esquema+".drogas_anmat as anm, "+Testing.esquema+".drogas_snomed as sno, "
-				+ "		"+Testing.esquema+".droga_formasimplificada as anc "
-				+ "where "
-				+ "		sno.iddrogas_Anmat=anm.droga_nombre and "
-				+ "		anm.idManfar like "+id,"nombre"));
+		Set<String> listaMedicamentos = new HashSet<String>();
+		listaMedicamentos.addAll(managerDB.executeScript_Query(Script.getMedRefDirecta(id),"nombre"));
 		
-		if (resultado.isEmpty())
-			resultado.addAll(managerDB.executeScript_Query(""
-					+ "select "
-					+ "		concat(sno.iddrogas_Snomed,'_',anm.droga_cantidad) as nombre "
-					+ "from  "
-					+ "		"+Testing.esquema+".drogas_anmat as anm, "+Testing.esquema+".drogas_snomed as sno, "
-					+ "		"+Testing.esquema+".droga_formasimplificada as anc "
-					+ "where "
-					+ "		anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=sno.iddrogas_Snomed and "
-					+ "		anm.idManfar like "+id,"nombre"));
-		
+		if (!listaMedicamentos.isEmpty())
+			hallado=true;
+			
+		for (String medicamentos : listaMedicamentos) {
+			resultado.addAll(managerDB.executeScript_Query(Script.getDrogas(medicamentos),"nombre"));
+		}
 		
 		return resultado;
+	
 	}
 	private static Set<String> buscarMedPorCaract(String id){
 
@@ -124,54 +112,20 @@ public class BuscadorMedicamentos {
 		// Guardo el id de la formaFarmaceutica
 		if (!unidadesFiltradas.isEmpty())
 			unidad=unidadesFiltradas.get(0);
-				
-		hallados.addAll(managerDB.executeScript_Query("	SELECT DISTINCT CONCAT(anm.nro_certificado_anmat,'_',anm.indexCertif,'_',man.nombre,'_',anm.medicamento_nombre,' ', anm.formaFarmaceutica,' ',anm.presentacion_texto,' ',anm.drogas_texto )  as cant"
-				+ "																										 "
-				+ "														FROM 	"+Testing.esquema+".medicamentos_manfar as man, "
-				+ "																"+Testing.esquema+".calificadores_snomed as form,"
-				+ "																"+Testing.esquema+".droga_formasimplificada as anc,"
-				+ "	 															"+Testing.esquema+".drogas_anmat as anm		"
-				+ "																, "+Testing.esquema+".drogas_snomed as snom "
-				+ "														WHERE 													 "
-				+ "																man.nombre = anm.medicamento_nombre and 		"	// Se llaman igual
-				+ "																form.detalle_calificador=anm.formaFarmaceutica and "
-				+ "																(form.idcalificador_Snomed like '"+id_FormaFa+"' or form.ancestro_calificador like '"+id_FormaFa+"') and 	"
-				+ "																(anm.presentacion_unidades like '"+unidad+"' or  anm.presentacion_unidades=0 )   and"
-				+ "																man.id_manfar="+id+" "
-						+ " and											(snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed)) "
-				+ "																"
-				+ "														GROUP BY anm.nro_certificado_anmat,anm.indexCertif,man.nombre,anm.medicamento_nombre	"
-				+ "																"
-				+ "														","cant"));		
 		
+		Set<String> listaMedicamentos = new HashSet<String>();
+		listaMedicamentos.addAll(managerDB.executeScript_Query(Script.getMedCarateristicasWithNombre(id, id_FormaFa, unidad),"nombre"));		
 		
-				
-		
-		if(hallados.isEmpty()){
-			hallados.addAll(managerDB.executeScript_Query("	SELECT DISTINCT CONCAT(anm.nro_certificado_anmat,'_',anm.indexCertif,'_',man.nombre,'_',anm.medicamento_nombre,' ', anm.formaFarmaceutica,' ',anm.presentacion_texto,' ',anm.drogas_texto )  as cant"
-					+ "																										 "
-					+ "														FROM 	"+Testing.esquema+".medicamentos_manfar as man, "
-					+ "																"+Testing.esquema+".droga_formasimplificada as anc,"
-					+ "	 															"+Testing.esquema+".drogas_anmat as anm	"
-					+ "															,	"+Testing.esquema+".drogas_snomed as snom "
-					+ "														WHERE 													 "
-					+ "																man.id_manfar="+id+" and		"
-					+ "																(man.nombre like concat(anm.medicamento_nombre,'%') or anm.medicamento_nombre like concat(man.nombre,'%'))		"
-					+ "																and (snom.iddrogas_Anmat=anm.droga_nombre or (anm.droga_nombre=anc.DrogaOrigen and anc.idDrogaAncestro=snom.iddrogas_Snomed)) "						
-					+ "														GROUP BY anm.nro_certificado_anmat,anm.indexCertif,man.nombre,anm.medicamento_nombre	"
-					+ "																"
-					+ "														","cant"));		
+		if(listaMedicamentos.isEmpty()){
+			listaMedicamentos.addAll(managerDB.executeScript_Query(Script.getMedCarateristicasLikeNombre(id, id_FormaFa, unidad),"nombre"));		
 		}
 		
+		if (!listaMedicamentos.isEmpty())
+			hallado=true;
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		for (String medicamentos : listaMedicamentos) {
+			resultado.addAll(managerDB.executeScript_Query(Script.getDrogas(medicamentos),"nombre"));
+		}
 		
 		//-------------------------- DECISION *--------------------------------------------
 		
@@ -250,9 +204,11 @@ public class BuscadorMedicamentos {
 		
 		Set<String> resultado = new HashSet<String>();
 			
-		if (!hallados.isEmpty() && !hallados.get(0).equals("null"))
+		if (!hallados.isEmpty())
+			hallado=true;
+			
+		if (hallado && !hallados.get(0).equals("null"))
 		{ 
-
 			if (hallados.size()==1)
 			{
 				resultado.addAll(managerDB.executeScript_Query(	
@@ -308,8 +264,6 @@ public class BuscadorMedicamentos {
 
 			}
 		}
-		else
-			resultado.addAll(hallados);
 		return resultado;
 		
 		
