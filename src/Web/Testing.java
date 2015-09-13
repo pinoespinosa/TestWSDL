@@ -102,7 +102,7 @@ public class Testing {
 				else
 				{					
 					long resta = System.currentTimeMillis()-init;
-					System.out.println(resta + " " + medicaciones[0]);
+				//	System.out.println(resta + " " + medicaciones[0]);
 					if (TESTING){
 							setSugerencia( (System.currentTimeMillis()+ "").substring(11,13) , bufferAmbiguedades[0].getIdMedicamento(), bufferAmbiguedades[0].getCodigo());
 						}
@@ -115,7 +115,7 @@ public class Testing {
 			if (!BuscadorMedicamentos.isFlagEventoAmbiguedadOFF()){
 				
 				long resta = System.currentTimeMillis()-init;
-				System.out.println(resta + " " + medicaciones[0]);
+		//		System.out.println(resta + " " + medicaciones[0]);
 				if (TESTING){
 					setSugerencia( System.currentTimeMillis()+ "" , bufferAmbiguedades[0].getIdMedicamento(), bufferAmbiguedades[0].getCodigo());
 					}
@@ -125,7 +125,7 @@ public class Testing {
 		}
 
 		long resta = System.currentTimeMillis()-init;
-		System.out.println(resta + " " + medicaciones[0]+" " +i);
+	//	System.out.println(resta + " " + medicaciones[0]+" " +i);
 		i++;
 		return resultado.toArray(new EventoInteraccionCondicion[resultado.size()]);	
 	}

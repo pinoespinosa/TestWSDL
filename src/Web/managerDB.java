@@ -164,6 +164,8 @@ public class managerDB {
 		
 		List<String> resultado = new ArrayList<String>();
 		ResultSet resultSet = null;
+		
+	//	System.out.println(Script);
 		try{
 			if (managerDB.conectionWasSucefull())
 			{
