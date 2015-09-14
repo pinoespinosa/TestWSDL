@@ -95,9 +95,9 @@ public class Script {
 						+ "where "
 						+ " 	anm.nro_certificado_anmat = " + nro_certificado_anmat_anm_indexCertif.split("_")[0] 
 						+ "     and anm.indexCertif = " + nro_certificado_anmat_anm_indexCertif.split("_")[1], "nombre");
-		for (String string : aux) {
-			System.out.println(string);
-		}
+	//	for (String string : aux) {
+	//		System.out.println(string);
+	//	}
 
 		return aux.size()+"";
 	};

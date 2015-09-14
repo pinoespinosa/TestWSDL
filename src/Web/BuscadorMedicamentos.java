@@ -177,7 +177,7 @@ public class BuscadorMedicamentos {
 									+ "	anm.indexCertif="+hallados.get(i).split("_")[1],"cant");
 														
 							for (String string : info) {
-								System.out.println(string);
+							//	System.out.println(string);
 								descripcion_drogas+= string + " / ";
 							}
 							descripcion_drogas+="]";
@@ -213,9 +213,9 @@ public class BuscadorMedicamentos {
 		{ 
 			System.out.println("Cache:" + Script.getDrogasCantidad(hallados.get(0)));
 			
-			for (String string : hallados) {
-				System.out.println(string);
-			}
+		//	for (String string : hallados) {
+		//		System.out.println(string);
+	//		}
 			
 			if (hallados.size()==1)
 			{
@@ -250,7 +250,7 @@ public class BuscadorMedicamentos {
 									+ "	anm.indexCertif="+hallados.get(i).split("_")[1],"cant");
 														
 							for (String string : info) {
-								System.out.println(string);
+						//		System.out.println(string);
 								descripcion_drogas+= string + " - ";
 							}
 							descripcion_drogas+="]";
@@ -269,16 +269,16 @@ public class BuscadorMedicamentos {
 					}
 
 				}
-				else
-					System.out.println("Cache hallados: 0\n");
+		//		else
+		//			System.out.println("Cache hallados: 0\n");
 			}
 			
 			
 			
 		}
-		else
-			if (hallado && hallados.get(0).equals("null"))
-					System.out.println("Cache: null\n"); 
+	//	else
+		//	if (hallado && hallados.get(0).equals("null"))
+			//		System.out.println("Cache: null\n"); 
 		return resultado;
 		
 		
