@@ -140,7 +140,7 @@ public class BuscadorMedicamentos {
 
 		if (hallados.size()==1){
 			resultado.addAll(managerDB.executeScript_Query(Script.getDrogas(hallados.get(0)),"nombre"));
-			System.out.println("Caracteristicas halladas: "+resultado.size()+"\n");
+	//		System.out.println("Caracteristicas halladas: "+resultado.size()+"\n");
 		}
 		else{
 			// Puede que haya o muchos o ninguno
@@ -183,7 +183,7 @@ public class BuscadorMedicamentos {
 				{
 					hallados.clear();
 					resultado.addAll(managerDB.executeScript_Query(Script.getDrogas(sugerencia.get(0)),"nombre"));	
-					System.out.println("Caracteristicas halladas: "+resultado.size()+"\n");
+		//			System.out.println("Caracteristicas halladas: "+resultado.size()+"\n");
 				}
 
 			}
